@@ -2,13 +2,13 @@ const { initializeApp } = require("firebase/app");
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendEmailVerification } = require("firebase/auth");
 
 const firebaseConfig = {
-  apiKey: "AIzaSyALjg8aAoosUmUmmjaVjCCtv4JRdkXwwec",
-  authDomain: "rapidapps-2f89b.firebaseapp.com",
-  projectId: "rapidapps-2f89b",
-  storageBucket: "rapidapps-2f89b.firebasestorage.app",
-  messagingSenderId: "174467478896",
-  appId: "1:174467478896:web:0e4fed7b0a4f043c71cbb5",
-  measurementId: "G-PKMXNK5EN7",
+  apiKey: "AIzaSyClyLHeAwFrJtylmx1FeGEW6VLp3KkOlfk",
+  authDomain: "capstone-rapidapps.firebaseapp.com",
+  projectId: "capstone-rapidapps",
+  storageBucket: "capstone-rapidapps.firebasestorage.app",
+  messagingSenderId: "863241185352",
+  appId: "1:863241185352:web:0d8be8b2e0eceda3c3907d",
+  measurementId: "G-6C0ZG39W5F",
 };
 
 const app = initializeApp(firebaseConfig);

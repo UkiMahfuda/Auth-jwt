@@ -1,14 +1,13 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
-require("dotenv").config();
-const router = require("./routes/authRoutes");
-const PORT = process.env.PORT || 3000;
+// const router = require("./routes/authRoutes");
+const routerApp = require("./routes/appRoutes");
+const PORT = process.env.PORT || 9000;
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser());
 
-app.use(router);
+// app.use("/api/auth", router);
+app.use("/api", routerApp);
 
 app.get("/", (req, res) => {
   res.send("Hello World");

@@ -33,4 +33,12 @@ const dbConnection = mysql.createConnection({
   password: "",
 });
 
+dbConnection.connect((err) => {
+  if (err) {
+    console.error("Database fail to connect:", err);
+    return;
+  }
+  console.log("Connection database success");
+});
+
 module.exports = dbConnection;

@@ -19,7 +19,7 @@ const kalkulasiDosis = (req, res) => {
     jumlahObat,
   };
 
-  res.status(200).json({ message: true, data: hasil });
+  res.status(200).json({ status: true, data: hasil });
 };
 
 const getArticles = (req, res) => {
@@ -27,8 +27,8 @@ const getArticles = (req, res) => {
 };
 
 const getArticleById = (req, res) => {
-  const articleId = parseInt(req.params.id); 
-  const article = articles.find((a) => a.id === articleId); 
+  const articleId = parseInt(req.params.id);
+  const article = articles.find((a) => a.id === articleId);
 
   if (article) {
     res.status(200).json(article);

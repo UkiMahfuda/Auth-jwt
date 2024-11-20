@@ -47,13 +47,26 @@ const login = (req, res) => {
       return res.status(401).json({ error: "Password is not valid" });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1y" });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "30d" });
     res.json({ status: true, message: "Login Successful", token });
   });
 };
 
+const tokenBlacklist = new Set();
+
 const logout = (req, res) => {
-  res.json({ message: "Logout successful" });
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Token undefined" });
+  }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    tokenBlacklist.add(token);
+    res.json({ status: true, message: "Logout successful" });
+  } catch (error) {
+    res.status(400).json({ status: false, message: "Token invalid" });
+  }
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, tokenBlacklist };

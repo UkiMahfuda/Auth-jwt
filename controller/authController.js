@@ -47,7 +47,7 @@ const login = (req, res) => {
       return res.status(401).json({ error: "Password is not valid" });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "30d" });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2d" });
     res.json({ status: true, message: "Login Successful", token });
   });
 };
@@ -58,9 +58,11 @@ const userDelete = (req, res) => {
   db.query(sql, (err, result) => {
     if (err) {
       return res.status(500).json({ status: false, message: err.message });
-    } else {
-      return res.status(200).json({ status: true, message: "User deleted successfully" });
     }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+    return res.status(200).json({ status: true, message: "User deleted successfully" });
   });
 };
 

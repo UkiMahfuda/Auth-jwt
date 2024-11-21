@@ -5,7 +5,7 @@ const kalkulasiDosis = (req, res) => {
   const { luasLahan, penyakit } = req.body;
 
   if (!luasLahan || isNaN(luasLahan) || !penyakit || !dosisObat[penyakit]) {
-    return res.status(400).json({ error: "Input tidak valid" });
+    return res.status(400).json({ error: "Input invalid" });
   }
 
   const { obat, kandunganBahan, dosis } = dosisObat[penyakit];
@@ -33,7 +33,7 @@ const getArticleById = (req, res) => {
   if (article) {
     res.status(200).json(article);
   } else {
-    res.status(404).json({ message: "Artikel tidak ditemukan" });
+    res.status(404).json({ message: "Article not found" });
   }
 };
 

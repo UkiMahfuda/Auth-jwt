@@ -52,21 +52,33 @@ const login = (req, res) => {
   });
 };
 
-const tokenBlacklist = new Set();
+const userDelete = (req, res) => {
+  const { id } = req.params;
+  const sql = `DELETE FROM users WHERE id = '${id}'`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.status(500).json({ status: false, message: err.message });
+    } else {
+      return res.status(200).json({ status: true, message: "User deleted successfully" });
+    }
+  });
+};
+
+const setToken = new Set();
 
 const logout = (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ error: "Token undefined" });
+    return res.status(401).json({ status: false, message: "Token undefined" });
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    tokenBlacklist.add(token);
+    setToken.add(token);
     res.json({ status: true, message: "Logout successful" });
   } catch (error) {
     res.status(400).json({ status: false, message: "Token invalid" });
   }
 };
 
-module.exports = { register, login, logout, tokenBlacklist };
+module.exports = { register, login, logout, setToken, userDelete };

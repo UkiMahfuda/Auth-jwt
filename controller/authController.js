@@ -66,6 +66,16 @@ const userDelete = (req, res) => {
   });
 };
 
+const getUser = (req, res) => {
+  const sql = "SELECT * FROM users";
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.status(500).json({ status: false, message: err.message });
+    }
+    return res.status(200).json({ status: true, data: result });
+  });
+};
+
 const setToken = new Set();
 
 const logout = (req, res) => {
@@ -83,4 +93,4 @@ const logout = (req, res) => {
   }
 };
 
-module.exports = { register, login, logout, setToken, userDelete };
+module.exports = { register, login, logout, setToken, userDelete, getUser };

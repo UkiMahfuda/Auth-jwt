@@ -1,18 +1,24 @@
-const { articles } = require("../utils/dataArticle");
+const dosisObat = require("../utils/dataObat");
 
-const getArticles = (req, res) => {
-  res.status(200).json(articles);
-};
+const kalkulasiDosis = (req, res) => {
+  const { luasLahan, penyakit } = req.body;
 
-const getArticleById = (req, res) => {
-  const articleId = parseInt(req.params.id);
-  const article = articles.find((a) => a.id === articleId);
-
-  if (article) {
-    res.status(200).json(article);
-  } else {
-    res.status(404).json({ message: "Article not found" });
+  if (!luasLahan || isNaN(luasLahan) || !penyakit || !dosisObat[penyakit]) {
+    return res.status(400).json({ error: "Input invalid" });
   }
+
+  const { obat, kandunganBahan, dosis } = dosisObat[penyakit];
+  const jumlahObat = luasLahan * dosis;
+
+  const hasil = {
+    luasLahan,
+    penyakit,
+    obat,
+    kandunganBahan,
+    jumlahObat,
+  };
+
+  res.status(200).json({ status: true, data: hasil });
 };
 
-module.exports = {  getArticles, getArticleById };
+module.exports = { kalkulasiDosis };

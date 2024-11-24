@@ -5,10 +5,10 @@ require("dotenv").config();
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
-  if (password.length < 5) {
+  if (password.length < 8) {
     return res.status(400).json({
       status: false,
-      message: "Password min 5 characters",
+      message: "Password min 8 characters",
     });
   }
   try {

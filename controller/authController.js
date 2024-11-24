@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const db = require("../config/config");
+const dbConnection = require("../config/config");
 require("dotenv").config();
 
 const register = async (req, res) => {
@@ -15,7 +15,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    db.query(sql, [username, email, hashedPassword], (err) => {
+    dbConnection.query(sql, [username, email, hashedPassword], (err) => {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
           return res.status(400).json({
@@ -36,15 +36,15 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   const sql = "SELECT * FROM users WHERE email = ?";
-  db.query(sql, [email], async (err, results) => {
+  dbConnection.query(sql, [email], async (err, results) => {
     if (err || results.length === 0) {
-      return res.status(401).json({ error: "Email is not registered" });
+      return res.status(401).json({ status: false, message: "Email is not registered" });
     }
 
     const user = results[0];
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: "Password is not valid" });
+      return res.status(401).json({ status: false, message: "Password invalid" });
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2d" });
@@ -55,7 +55,7 @@ const login = (req, res) => {
 const userDelete = (req, res) => {
   const { id } = req.params;
   const sql = `DELETE FROM users WHERE id = '${id}'`;
-  db.query(sql, (err, result) => {
+  dbConnection.query(sql, (err, result) => {
     if (err) {
       return res.status(500).json({ status: false, message: err.message });
     }
@@ -68,7 +68,7 @@ const userDelete = (req, res) => {
 
 const getUser = (req, res) => {
   const sql = "SELECT * FROM users";
-  db.query(sql, (err, result) => {
+  dbConnection.query(sql, (err, result) => {
     if (err) {
       return res.status(500).json({ status: false, message: err.message });
     }
